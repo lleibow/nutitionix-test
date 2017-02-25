@@ -15,14 +15,45 @@
 //= require turbolinks
 //= require_tree .
 
-$('#search-field').submit(function(event){
-  event.preventDefault;
-  $.ajax({
-      url: 'https://www.nutritionix.com/track-api/v2/search/instant?branded=false&common=true&self=false&query=' + this.text,
-      method: 'GET',
-      dataType: 'json',
-    }).done(function(data){
-      console.log("Success! " + data );
-      debugger
+$(function() {
+  $('form').submit(function(event){
+    event.preventDefault();
+    $.ajax({
+        url: 'https://www.nutritionix.com/track-api/v2/search/instant?branded=false&common=true&self=false&query=' + $(this).serialize().slice(21),
+        method: 'GET',
+        dataType: 'json',
+      }).done(function(data){
+
+          for (var i = 0; i < data.common.length; i++){
+
+            var foodItem = $(data)[0].common[i].food_name;
+            var listItem = $('<li>');
+            listItem.append(foodItem);
+            $('ul').append(listItem);
+            $.ajax({
+
+              url: 'https://trackapi.nutritionix.com/v2/natural/nutrients',
+              method: 'POST',
+              dataType: 'json',
+              data: {
+                "query": "\"foodItem\"",
+                "line_delimited": true
+                },
+              headers: {
+                'x-app-key': 'ae6b802b00bde68f775c2d9f68f8d966',
+                'x-app-id': '6a469fd6',
+                'Content-Type': 'application/json'
+                }
+            }).done(function(data){
+              console.log(data);
+            });
+
+      };
     });
+  });
+
+  function lookUpNutrients(foodItem) {
+
+  }
+
 });
