@@ -27,32 +27,36 @@ $(function() {
           for (var i = 0; i < 3; i++){
 
             var foodItem = $(data)[0].common[i].food_name;
+            var listItem = $('<a class="food-link" href=""></br>');
+            listItem.append(foodItem);
+            $('ul').append(listItem);
 
-            $.ajax({
 
-              url: 'https://trackapi.nutritionix.com/v2/natural/nutrients',
-              method: 'POST',
-              dataType: 'json',
-              data:
-                "{\n\t\"query\": \"" + foodItem + "\",\n\t\"line_delimited\": true\n}",
-              headers: {
-                'x-app-key': 'ae6b802b00bde68f775c2d9f68f8d966',
-                'x-app-id': '6a469fd6',
-                'Content-Type': 'application/json'
-                }
-            }).done(function(data){
-
-              var foodNutrients = data.foods[0];
-              var calories = foodNutrients.nf_calories;
-              var listItem = $('<li>');
-              var listItem2 = $('<div>');
-              listItem.append(foodItem);
-              $('ul').append(listItem);
-              listItem2.append(calories);
-              $('ul').append(listItem2);
-
-            });
       };
+      $('.food-link').on('click', function(event){
+        event.preventDefault();
+        // debugger
+      $.ajax({
+
+        url: 'https://trackapi.nutritionix.com/v2/natural/nutrients',
+        method: 'POST',
+        dataType: 'json',
+        data:
+          "{\n\t\"query\": \"" + $(this)[0].innerText.trim() + "\",\n\t\"line_delimited\": true\n}",
+        headers: {
+          'x-app-key': 'ae6b802b00bde68f775c2d9f68f8d966',
+          'x-app-id': '6a469fd6',
+          'Content-Type': 'application/json'
+          }
+      }).done(function(data){
+
+        var foodNutrients = data.foods[0];
+        var calories = foodNutrients.nf_calories;
+        debugger
+        $('body').html(foodNutrients.nf_protein + " " + foodNutrients.nf_calories);
+        //get an instructor to tell us how to batch requests
+      });
+      });
     });
   });
 });
