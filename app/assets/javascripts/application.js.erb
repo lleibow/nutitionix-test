@@ -46,18 +46,35 @@ $(function() {
         headers: {
           'x-app-key': 'ae6b802b00bde68f775c2d9f68f8d966',
           'x-app-id': '6a469fd6',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
           }
       }).done(function(data){
 
         var foodNutrients = data.foods[0];
-        var calories = foodNutrients.nf_calories;
         var backButton = $("<a class='backButton' href=''>").html("Back");
-        var nutrientsList = $("<div class='nutrientsList'>");
+        var nutrientsList = $("<ul class='nutrientsList'>");
 
         $('body').html(nutrientsList)
-        $('.nutrientsList').html(foodNutrients.nf_protein + " " + foodNutrients.nf_calories);
         $('body').prepend(backButton[0]);
+
+        var name = foodNutrients.food_name;
+        var calories = foodNutrients.nf_calories;
+        var cholesterol = foodNutrients.nf_cholesterol;
+        var fiber = foodNutrients.nf_dietary_fiber;
+        var potassium = foodNutrients.nf_potassium;
+        var protein = foodNutrients.nf_protein;
+        var saturatedFat = foodNutrients.nf_saturated_fat;
+        var sodium = foodNutrients.nf_sodium;
+        var sugars = foodNutrients.nf_sugars;
+        var carbs = foodNutrients.nf_total_carbohydrate;
+        var fat = foodNutrients.nf_total_fat;
+
+        var nutrientListItem = $('<li>')
+        var nutrients = 'Name: '  + name + " " + 'Calories: '  + calories + " " + 'Cholesterol: '  + cholesterol + " " + 'Fiber: '  + fiber + " " + 'Potassium: '  + potassium + " " + 'Protein: '  + protein + " " + 'Saturated Fat: '  + saturatedFat + " " + 'Sodium: '  + sodium + " " + 'Sugars: '  + sugars + " " + 'Carbs: '  + carbs + " " + 'Fat: '  + fat + " ";
+        debugger
+        $('.nutrientsList').append(nutrients);
+
         //get an instructor to tell us how to batch requests
       });
       });

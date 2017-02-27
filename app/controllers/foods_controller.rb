@@ -7,6 +7,7 @@ class FoodsController < ApplicationController
 
   def create
     @food = Food.new(food_params)
+
   end
 
   def index
