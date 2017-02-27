@@ -35,7 +35,7 @@ $(function() {
       };
       $('.food-link').on('click', function(event){
         event.preventDefault();
-        // debugger
+        console.log("Food Link works!");
       $.ajax({
 
         url: 'https://trackapi.nutritionix.com/v2/natural/nutrients',
@@ -52,8 +52,12 @@ $(function() {
 
         var foodNutrients = data.foods[0];
         var calories = foodNutrients.nf_calories;
-        debugger
-        $('body').html(foodNutrients.nf_protein + " " + foodNutrients.nf_calories);
+        var backButton = $("<a class='backButton' href=''>").html("Back");
+        var nutrientsList = $("<div class='nutrientsList'>");
+
+        $('body').html(nutrientsList)
+        $('.nutrientsList').html(foodNutrients.nf_protein + " " + foodNutrients.nf_calories);
+        $('body').prepend(backButton[0]);
         //get an instructor to tell us how to batch requests
       });
       });
